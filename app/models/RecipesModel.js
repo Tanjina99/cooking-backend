@@ -18,6 +18,7 @@ const recipeSchema = new mongoose.Schema({
   ingredients: [{ name: String, quantity: String }], // List of ingredients, each with a name and quantity
   servings: { type: Number, required: true }, // Number of servings
   category: { type: String, required: true },
+  ratings: { type: Number, default: 0 }, // Total number of ratings
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

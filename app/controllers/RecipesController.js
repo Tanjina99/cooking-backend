@@ -210,6 +210,47 @@ const deleteRecipe = async (req, res) => {
   }
 };
 
+const addReview = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const recipe = await Recipe.findById(id);
+    if (!recipe) {
+      res
+        .status(status.status.NOT_FOUND)
+        .send(
+          response.createErrorResponse(
+            status.status.NOT_FOUND,
+            "Recipe not found"
+          )
+        );
+    }
+    console.log(recipe);
+    const newReview = req.body;
+    console.log(newReview);
+    recipe.reviews.push(newReview);
+    await recipe.save();
+    res
+      .status(status.status.OK)
+      .send(
+        response.createSuccessResponse(
+          status.status.OK,
+          "Review added successfully",
+          recipe
+        )
+      );
+  } catch (error) {
+    res
+      .status(status.status.INTERNAL_SERVER_ERROR)
+      .send(
+        response.createErrorResponse(
+          status.status.INTERNAL_SERVER_ERROR,
+          "Error occured deleting review",
+          error
+        )
+      );
+  }
+};
+
 module.exports = {
   createRecipe,
   getAllRecipe,
@@ -217,4 +258,5 @@ module.exports = {
   updateSingleRecipe,
   deleteRecipe,
   getAllRecipeByAuthor,
+  addReview,
 };
